@@ -1,0 +1,19 @@
+Waktu Eksekusi: 2026-06-15 20.15.37
+Command: nmap -sS -p- -T4 192.168.56.10
+
+Output:
+Starting Nmap 7.80 ( https://nmap.org ) at 2026-06-15 20:15 SE Asia Standard Time
+Nmap scan report for 192.168.56.10
+Host is up (0.98s latency).
+Not shown: 65529 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+1514/tcp  open  fujitsu-dtcns
+5044/tcp  open  lxi-evntsvc
+5601/tcp  open  esmagent
+9200/tcp  open  wap-wsp
+55000/tcp open  unknown
+MAC Address: 08:00:27:11:B2:FE (Oracle VirtualBox virtual NIC)
+
+Nmap done: 1 IP address (1 host up) scanned in 24.44 seconds
+

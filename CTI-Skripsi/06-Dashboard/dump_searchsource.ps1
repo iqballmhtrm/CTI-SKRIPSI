@@ -1,0 +1,9 @@
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+$kibana = 'http://192.168.56.10:5601'
+$auth = 'elastic:lflqgBlynmWIBHgzvN17lvZ1Lz34qAxn'
+$id = 'v3-mitre-technique-pie'
+$resp = curl.exe -sS -u $auth -k -H 'kbn-xsrf: true' "$kibana/api/saved_objects/visualization/$id"
+$j = $resp | ConvertFrom-Json
+$ss = $j.attributes.kibanaSavedObjectMeta.searchSourceJSON
+try { $parsed = $ss | ConvertFrom-Json; $parsed | ConvertTo-Json -Depth 10 | Write-Output } catch { Write-Output 'parse failed'; Write-Output $ss }

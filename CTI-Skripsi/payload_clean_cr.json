@@ -1,0 +1,8 @@
+
+{
+  "script": {
+    "source": "if (ctx._source.mitre != null && ctx._source.mitre.technique_id != null) { ctx._source.mitre.technique_id = ctx._source.mitre.technique_id.replaceAll(\\"\\\\r\\\", \\\"\\\" ) }",
+    "lang": "painless"
+  },
+  "query": {"exists": {"field": "mitre.technique_id"}}
+}

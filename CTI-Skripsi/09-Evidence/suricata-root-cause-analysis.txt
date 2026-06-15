@@ -1,0 +1,229 @@
+﻿=== 1. suricata --build-info ===
+This is Suricata version 7.0.3 RELEASE
+Features: NFQ PCAP_SET_BUFF AF_PACKET HAVE_PACKET_FANOUT LIBCAP_NG LIBNET1.1 HAVE_HTP_URI_NORMALIZE_HOOK PCRE_JIT HAVE_NSS HTTP2_DECOMPRESSION HAVE_LUA HAVE_LUAJIT HAVE_LIBJANSSON TLS TLS_C11 MAGIC RUST 
+SIMD support: SSE_4_2 SSE_4_1 SSE_3 
+Atomic intrinsics: 1 2 4 8 16 byte(s)
+64-bits, Little-endian architecture
+GCC version 13.2.0, C version 201112
+compiled with _FORTIFY_SOURCE=2
+L1 cache line size (CLS)=64
+thread local storage method: _Thread_local
+compiled with LibHTP v0.5.46, linked against LibHTP v0.5.46
+
+Suricata Configuration:
+  AF_PACKET support:                       yes
+  AF_XDP support:                          yes
+  DPDK support:                            yes
+  eBPF support:                            yes
+  XDP support:                             yes
+  PF_RING support:                         no
+  NFQueue support:                         yes
+  NFLOG support:                           yes
+  IPFW support:                            no
+  Netmap support:                          no 
+  DAG enabled:                             no
+  Napatech enabled:                        no
+  WinDivert enabled:                       no
+
+  Unix socket enabled:                     yes
+  Detection enabled:                       yes
+
+  Libmagic support:                        yes
+  libjansson support:                      yes
+  hiredis support:                         yes
+  hiredis async with libevent:             yes
+  PCRE jit:                                yes
+  LUA support:                             yes, through luajit
+  libluajit:                               yes
+  GeoIP2 support:                          yes
+  Non-bundled htp:                         yes
+  Hyperscan support:                       yes
+  Libnet support:                          yes
+  liblz4 support:                          yes
+  Landlock support:                        yes
+
+  Rust support:                            yes
+  Rust strict mode:                        no
+  Rust compiler path:                      /usr/bin/rustc
+  Rust compiler version:                   rustc 1.75.0 (82e1608df 2023-12-21) (built from a source tarball)
+  Cargo path:                              /usr/bin/cargo
+  Cargo version:                           cargo 1.75.0
+
+  Python support:                          yes
+  Python path:                             /usr/bin/python3
+  Install suricatactl:                     yes
+  Install suricatasc:                      yes
+  Install suricata-update:                 no, not bundled
+
+  Profiling enabled:                       no
+  Profiling locks enabled:                 no
+  Profiling rules enabled:                 no
+
+  Plugin support (experimental):           yes
+  DPDK Bond PMD:                           yes
+
+Development settings:
+  Coccinelle / spatch:                     no
+  Unit tests enabled:                      no
+  Debug output enabled:                    no
+  Debug validation enabled:                no
+  Fuzz targets enabled:                    no
+
+Generic build parameters:
+  Installation prefix:                     /usr
+  Configuration directory:                 /etc/suricata/
+  Log directory:                           /var/log/suricata/
+
+  --prefix                                 /usr
+  --sysconfdir                             /etc
+  --localstatedir                          /var
+  --datarootdir                            /usr/share
+
+  Host:                                    x86_64-pc-linux-gnu
+  Compiler:                                gcc (exec name) / g++ (real)
+  GCC Protect enabled:                     yes
+  GCC march native enabled:                no
+  GCC Profile enabled:                     no
+  Position Independent Executable enabled: no
+  CFLAGS                                   -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -ffile-prefix-map=/build/suricata-sjuDIn/suricata-7.0.3=. -flto=auto -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection -Wformat -Werror=format-security -fcf-protection -fdebug-prefix-map=/build/suricata-sjuDIn/suricata-7.0.3=/usr/src/suricata-1:7.0.3-1build3 -fPIC -std=c11 -I/usr/include/dpdk -I/usr/include/dpdk/../x86_64-linux-gnu/dpdk -include rte_config.h -march=corei7 -mrtm -I/usr/include/x86_64-linux-gnu -I/usr/include/libnl3 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include  -I${srcdir}/../rust/gen -I${srcdir}/../rust/dist
+  PCAP_CFLAGS                               -I/usr/include
+  SECCFLAGS                                -fstack-protector -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security
+=== 2 & 3. grep rule-files and custom.rules ===
+2016:rule-files:
+=== 4. ls -lah /etc/suricata/rules/ ===
+total 152K
+drwxr-xr-x 2 root root 4.0K Mar 10 02:29 .
+drwxr-xr-x 3 root root 4.0K Mar 17 17:42 ..
+-rw-r--r-- 1 root root 1.9K Feb  8  2024 app-layer-events.rules
+-rw-r--r-- 1 root root  21K Feb  8  2024 decoder-events.rules
+-rw-r--r-- 1 root root  468 Feb  8  2024 dhcp-events.rules
+-rw-r--r-- 1 root root 1.2K Feb  8  2024 dnp3-events.rules
+-rw-r--r-- 1 root root 1.2K Feb  8  2024 dns-events.rules
+-rw-r--r-- 1 root root 4.0K Feb  8  2024 files.rules
+-rw-r--r-- 1 root root  446 Feb  8  2024 ftp-events.rules
+-rw-r--r-- 1 root root 3.3K Feb  8  2024 http2-events.rules
+-rw-r--r-- 1 root root  14K Feb  8  2024 http-events.rules
+-rw-r--r-- 1 root root 2.8K Feb  8  2024 ipsec-events.rules
+-rw-r--r-- 1 root root  585 Feb  8  2024 kerberos-events.rules
+-rw-r--r-- 1 root root 2.1K Feb  8  2024 modbus-events.rules
+-rw-r--r-- 1 root root 2.2K Feb  8  2024 mqtt-events.rules
+-rw-r--r-- 1 root root  729 Feb  8  2024 nfs-events.rules
+-rw-r--r-- 1 root root  558 Feb  8  2024 ntp-events.rules
+-rw-r--r-- 1 root root  544 Feb  8  2024 quic-events.rules
+-rw-r--r-- 1 root root  926 Feb  8  2024 rfb-events.rules
+-rw-r--r-- 1 root root 4.5K Feb  8  2024 smb-events.rules
+-rw-r--r-- 1 root root 5.3K Feb  8  2024 smtp-events.rules
+-rw-r--r-- 1 root root  719 Feb  8  2024 ssh-events.rules
+-rw-r--r-- 1 root root  14K Feb  8  2024 stream-events.rules
+-rw-r--r-- 1 root root 6.8K Feb  8  2024 tls-events.rules
+total 42M
+drwxr-xr-x 2 root root 4.0K Jun  9 00:53 .
+drwxr-xr-x 4 root root 4.0K Mar 10 04:04 ..
+-rw-r--r-- 1 root root 3.2K Jun  9 00:53 classification.config
+-rw-r--r-- 1 root root  42M Jun  9 00:53 suricata.rules
+=== 5. custom.rules contents ===
+cat: /etc/suricata/rules/custom.rules: No such file or directory
+alert ip any any -> any any (msg:"SURICATA Applayer Mismatch protocol both directions"; flow:established; app-layer-event:applayer_mismatch_protocol_both_directions; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260000; rev:1;)
+alert ip any any -> any any (msg:"SURICATA Applayer Wrong direction first Data"; flow:established; app-layer-event:applayer_wrong_direction_first_data; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260001; rev:1;)
+alert ip any any -> any any (msg:"SURICATA Applayer Detect protocol only one direction"; flow:established; app-layer-event:applayer_detect_protocol_only_one_direction; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260002; rev:1;)
+alert ip any any -> any any (msg:"SURICATA Applayer Protocol detection skipped"; flow:established; app-layer-event:applayer_proto_detection_skipped; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260003; rev:1;)
+alert tcp any any -> any any (msg:"SURICATA Applayer No TLS after STARTTLS"; flow:established; app-layer-event:applayer_no_tls_after_starttls; flowint:applayer.anomaly.count,+,1; classtype:protocol-command-decode; sid:2260004; rev:2;)
+=== 6. suricata -T (Test Config) ===
+Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Warning: debug: error opening file /var/log/suricata//suricata.log: Permission denied
+i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+E: suricata: The logging directory "/var/log/suricata/" supplied by /etc/suricata/suricata.yaml (default-log-dir) is not writable. Shutting down the engine
+=== 7. interface config ===
+81:  - interface: enp0s3
+479:  - interface: enp0s3
+553:  #- interface: default
+560:  - interface: default
+615:    - interface: 0000:3b:00.0 # PCIe address of the NIC port
+653:    - interface: default
+671:  - interface: eth0
+698:  - interface: default
+1802: - interface: eth2
+1834: #- interface: eth3
+1839: - interface: default
+1844:  - interface: eth0
+1884:  #- interface: eth1
+1889:  - interface: default
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:6f:06:0d brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 metric 100 brd 10.0.2.255 scope global dynamic enp0s3
+       valid_lft 75237sec preferred_lft 75237sec
+    inet6 fd17:625c:f037:2:a00:27ff:fe6f:60d/64 scope global dynamic mngtmpaddr noprefixroute 
+       valid_lft 86149sec preferred_lft 14149sec
+    inet6 fe80::a00:27ff:fe6f:60d/64 scope link 
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:11:b2:fe brd ff:ff:ff:ff:ff:ff
+    inet 192.168.56.10/24 brd 192.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe11:b2fe/64 scope link 
+       valid_lft forever preferred_lft forever
+=== 8. journalctl -u suricata ===
+Jun 09 00:55:37 soc-server systemd[1]: Stopping suricata.service - Suricata IDS/IDP daemon...
+Jun 09 00:55:37 soc-server suricatasc[3562]: {"message": "Closing Suricata", "return": "OK"}
+Jun 09 00:55:45 soc-server systemd[1]: suricata.service: Deactivated successfully.
+Jun 09 00:55:45 soc-server systemd[1]: Stopped suricata.service - Suricata IDS/IDP daemon.
+Jun 09 00:55:45 soc-server systemd[1]: suricata.service: Consumed 2min 59.356s CPU time, 578.6M memory peak, 0B memory swap peak.
+Jun 09 00:55:45 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 09 00:55:45 soc-server suricata[3564]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 09 00:55:45 soc-server suricata[3564]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 09 00:55:45 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot d866dc9bdf2f4b48948cd19b05dea104 --
+Jun 09 18:06:48 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 09 18:06:50 soc-server suricata[833]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 09 18:06:50 soc-server suricata[833]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 09 18:06:51 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot f28d1bbdb7f5471fab7141c269f644aa --
+Jun 10 16:07:21 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 10 16:07:23 soc-server suricata[862]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 10 16:07:23 soc-server suricata[862]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 10 16:07:24 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot a4cd6a3e838b499e9a28b4a7029c22f8 --
+Jun 11 09:55:35 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 11 09:55:37 soc-server suricata[812]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 11 09:55:37 soc-server suricata[812]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 11 09:55:37 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot 8462232809064cc29952d713bcf40475 --
+Jun 11 21:30:23 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 11 21:30:24 soc-server suricata[814]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 11 21:30:24 soc-server suricata[814]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 11 21:30:25 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot 87dbc4da66d2409592c9566cf24e56a2 --
+Jun 12 12:16:47 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 12 12:16:48 soc-server suricata[819]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 12 12:16:48 soc-server suricata[819]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 12 12:16:49 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+Jun 13 09:57:06 soc-server systemd[1]: Stopping suricata.service - Suricata IDS/IDP daemon...
+Jun 13 09:57:06 soc-server suricatasc[12522]: {"message": "Closing Suricata", "return": "OK"}
+Jun 13 09:57:17 soc-server systemd[1]: suricata.service: Deactivated successfully.
+Jun 13 09:57:17 soc-server systemd[1]: Stopped suricata.service - Suricata IDS/IDP daemon.
+Jun 13 09:57:17 soc-server systemd[1]: suricata.service: Consumed 44min 33.180s CPU time, 615.4M memory peak, 0B memory swap peak.
+Jun 13 09:57:17 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 13 09:57:17 soc-server suricata[12612]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 13 09:57:17 soc-server suricata[12612]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 13 09:57:18 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot 12a6fe92d26f44e79b619806c9ed8fcf --
+Jun 14 14:15:45 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 14 14:15:47 soc-server suricata[902]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 14 14:15:47 soc-server suricata[902]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 14 14:15:48 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot f44cee59ce5746a5bacdd44f530c77b3 --
+Jun 14 16:24:43 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 14 16:24:45 soc-server suricata[835]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 14 16:24:45 soc-server suricata[835]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 14 16:24:45 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.
+-- Boot 273baf184e5040299249a91198b06ea3 --
+Jun 15 17:23:35 soc-server systemd[1]: Starting suricata.service - Suricata IDS/IDP daemon...
+Jun 15 17:23:36 soc-server suricata[815]: Info: conf-yaml-loader: Configuration node 'pcap' redefined.
+Jun 15 17:23:36 soc-server suricata[815]: i: suricata: This is Suricata version 7.0.3 RELEASE running in SYSTEM mode
+Jun 15 17:23:37 soc-server systemd[1]: Started suricata.service - Suricata IDS/IDP daemon.

@@ -1,0 +1,1 @@
+{"query":{"bool":{"must":[{"exists":{"field":"mitre.technique_id"}},{"bool":{"must_not":[{"term":{"mitre.technique_id.keyword":"Unmapped"}}]}}]}}}

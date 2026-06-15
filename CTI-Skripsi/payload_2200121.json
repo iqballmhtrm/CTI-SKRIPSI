@@ -1,0 +1,20 @@
+{
+  "script": {
+    "source": "if (ctx._source.mitre == null) { ctx._source.mitre = new HashMap(); } ctx._source.mitre.put(\"technique_id\", params.tech);",
+    "lang": "painless",
+    "params": {"tech":"T1046"}
+  },
+  "query": {
+    "bool": {
+      "should": [
+        {"term": {"alert.signature_id": 2200121}},
+        {"term": {"suricata.eve.alert.signature_id": 2200121}},
+        {"term": {"data.alert.signature_id": 2200121}}
+      ],
+      "minimum_should_match": 1,
+      "must_not": [
+        {"exists": {"field": "mitre.technique_id"}}
+      ]
+    }
+  }
+}
