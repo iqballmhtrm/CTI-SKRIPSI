@@ -27,7 +27,7 @@ Set-Content -Path $combined -Value $ip1
 Add-Content -Path $combined -Value $ip2
 
 # Membaca file visualisasi dan otomatis memperbaiki error field source_ip_fixed -> source_ip_fixed.keyword
-$vizContent = Get-Content -Raw -Path 'd:\skripsi josjis\eksperimen\cti-dashboard-v3-visualizations.ndjson'
+$vizContent = Get-Content -Raw -Path '.\cti-dashboard-v3-visualizations.ndjson'
 $vizContent = $vizContent -replace 'source_ip_fixed(?!\.keyword)', 'source_ip_fixed.keyword'
 $vizContent = $vizContent -replace 'source\.ip(?!\.keyword)', 'source.ip.keyword'
 $vizContent = $vizContent -replace 'destination\.ip(?!\.keyword)', 'destination.ip.keyword'
@@ -42,7 +42,7 @@ $vizContent = $vizContent -replace 'source_ip(?!\.keyword|_fixed)', 'source_ip_f
 Add-Content -Path $combined -Value $vizContent
 
 # Membaca file panel validasi dan otomatis memperbaiki error field source_ip_fixed -> source_ip_fixed.keyword
-$valContent = Get-Content -Raw -Path 'd:\skripsi josjis\eksperimen\cti-dashboard-v3-validation-panels.ndjson'
+$valContent = Get-Content -Raw -Path '.\cti-dashboard-v3-validation-panels.ndjson'
 $valContent = $valContent -replace 'source_ip_fixed(?!\.keyword)', 'source_ip_fixed.keyword'
 $valContent = $valContent -replace 'source\.ip(?!\.keyword)', 'source.ip.keyword'
 $valContent = $valContent -replace 'alert\.signature(?!\.keyword)', 'alert.signature.keyword'
