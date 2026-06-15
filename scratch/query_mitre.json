@@ -1,0 +1,45 @@
+{
+  "size": 0,
+  "aggs": {
+    "technique_distribution": {
+      "terms": {
+        "field": "mitre.technique_id",
+        "size": 20,
+        "missing": "NO_MITRE"
+      }
+    },
+    "technique_name_distribution": {
+      "terms": {
+        "field": "mitre.technique_name",
+        "size": 20
+      }
+    },
+    "pyramid_distribution": {
+      "terms": {
+        "field": "pyramid.layer",
+        "size": 20,
+        "missing": "NO_PYRAMID"
+      }
+    },
+    "event_types": {
+      "terms": {
+        "field": "event_type.keyword",
+        "size": 20
+      }
+    },
+    "only_alerts": {
+      "filter": {
+        "term": { "event_type.keyword": "alert" }
+      },
+      "aggs": {
+        "per_technique": {
+          "terms": {
+            "field": "mitre.technique_id",
+            "size": 20,
+            "missing": "NO_MITRE"
+          }
+        }
+      }
+    }
+  }
+}

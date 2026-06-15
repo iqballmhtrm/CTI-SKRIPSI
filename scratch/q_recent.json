@@ -1,0 +1,13 @@
+{
+  "size": 5,
+  "sort": [{"@timestamp": "desc"}],
+  "query": {
+    "bool": {
+      "filter": [
+        {"term": {"event_type.keyword": "alert"}},
+        {"range": {"@timestamp": {"gte": "now-2h"}}}
+      ]
+    }
+  },
+  "_source": ["@timestamp", "alert.signature_id", "alert.signature", "mitre.technique_id", "mitre.technique_name", "src_ip", "dest_ip", "suricata.eve.alert.signature_id"]
+}

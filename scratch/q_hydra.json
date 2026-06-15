@@ -1,0 +1,19 @@
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {"term": {"event_type.keyword": "alert"}},
+        {"term": {"mitre.technique_id": "T1110.001"}}
+      ]
+    }
+  },
+  "aggs": {
+    "by_date": {
+      "date_histogram": {
+        "field": "@timestamp",
+        "calendar_interval": "day"
+      }
+    }
+  }
+}

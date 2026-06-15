@@ -1,0 +1,1 @@
+Harap ambil screenshot Wazuh Security Events dan simpan di sini dengan nama wazuh-events.png

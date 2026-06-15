@@ -1,0 +1,21 @@
+{
+  "size": 1,
+  "query": {
+    "bool": {
+      "filter": [
+        {"term": {"event_type.keyword": "alert"}},
+        {"range": {"@timestamp": {"gte": "now-24h"}}}
+      ]
+    }
+  },
+  "aggs": {
+    "has_source_ip": {
+      "filter": {"exists": {"field": "source.ip"}},
+      "aggs": {"count": {"value_count": {"field": "source.ip"}}}
+    },
+    "has_src_ip": {
+      "filter": {"exists": {"field": "src_ip"}},
+      "aggs": {"ips": {"terms": {"field": "src_ip.keyword", "size": 10}}}
+    }
+  }
+}

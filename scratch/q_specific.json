@@ -1,0 +1,13 @@
+{
+  "size": 5,
+  "sort": [{"@timestamp": "desc"}],
+  "query": {
+    "bool": {
+      "filter": [
+        {"term": {"event_type.keyword": "alert"}},
+        {"terms": {"mitre.technique_id": ["T1110.001", "T1595.002", "T1046", "T1110"]}}
+      ]
+    }
+  },
+  "_source": ["@timestamp", "alert.signature_id", "alert.signature", "mitre.technique_id", "mitre.technique_name", "src_ip"]
+}

@@ -1,0 +1,1 @@
+{"timestamp":"2026-06-15T23:03:40.987654+0700","event_type":"alert","src_ip":"192.168.56.1","dest_ip":"192.168.56.10","alert":{"signature_id":1000030,"signature":"[CTI] Nikto Web Scanner User-Agent Detected","category":"Web Application Attack","severity":1,"metadata":{"mitre_tactic_name":["Reconnaissance"]}}}

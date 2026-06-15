@@ -1,0 +1,14 @@
+{
+  "size": 3,
+  "sort": [{"@timestamp": "desc"}],
+  "query": {
+    "bool": {
+      "filter": [
+        {"term": {"event_type.keyword": "alert"}},
+        {"term": {"src_ip.keyword": "192.168.56.110"}},
+        {"range": {"@timestamp": {"gte": "now-30m"}}}
+      ]
+    }
+  },
+  "_source": ["@timestamp", "alert.signature_id", "alert.signature", "mitre.technique_id", "mitre.technique_name", "src_ip"]
+}
