@@ -1,0 +1,38 @@
+# =============================================================================
+# Dictionary MITRE ATT&CK - Taktik
+# =============================================================================
+# File    : mitre-tactic.yml
+# Lokasi  : /etc/logstash/dictionaries/mitre-tactic.yml
+# Fungsi  : Pemetaan Rule ID (Suricata/Snort) ke taktik MITRE ATT&CK
+#
+# Format  : "rule_id": "Nama Taktik MITRE"
+#
+# 14 Taktik MITRE ATT&CK:
+#   1. Reconnaissance        - Pengintaian awal
+#   2. Resource Development   - Persiapan sumber daya
+#   3. Initial Access         - Akses awal ke target
+#   4. Execution              - Menjalankan kode berbahaya
+#   5. Persistence            - Mempertahankan akses
+#   6. Privilege Escalation   - Meningkatkan hak akses
+#   7. Defense Evasion        - Menghindari deteksi
+#   8. Credential Access      - Mencuri kredensial
+#   9. Discovery              - Menjelajahi lingkungan target
+#  10. Lateral Movement       - Berpindah antar sistem
+#  11. Collection             - Mengumpulkan data target
+#  12. Command and Control    - Komunikasi dengan C2
+#  13. Exfiltration           - Mencuri data keluar
+#  14. Impact                 - Merusak atau mengganggu
+#
+# Referensi: https://attack.mitre.org/tactics/
+# =============================================================================
+
+# --- Suricata Custom Rules (1000xxx) ---
+"1000010": "Discovery"
+"1000020": "Credential Access"
+"1000030": "Reconnaissance"
+
+# --- Emerging Threats / ET Rules (2xxxxxx) ---
+"2200074": "Discovery"
+"2013504": "Discovery"
+"2200121": "Credential Access"
+"2001219": "Command and Control"
