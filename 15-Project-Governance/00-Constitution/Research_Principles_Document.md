@@ -1,28 +1,115 @@
 # Research Principles Document
 
 ## Status
-Template
 
-## Purpose
+LOCKED
+
+Scientific Constitution
+
+Ground Truth
+
+R-00 → R-14
+
+---
+
+# Purpose
+
+Dokumen ini merupakan konstitusi ilmiah penelitian dan menjadi Ground Truth bagi seluruh keputusan metodologis, konseptual, desain, implementasi, serta evaluasi penelitian. Seluruh dokumen R-00 sampai R-14, Bab III, Bab IV, artikel ilmiah, implementasi artefak, dan evaluasi wajib konsisten terhadap prinsip-prinsip yang ditetapkan dalam dokumen ini.
+
+Dokumen ini bukan bagian dari naskah skripsi, tetapi menjadi acuan internal penelitian.
+
+---
+
+# Part I — Research Philosophy
+
+## P-01. Urutan Fondasi Penelitian
+
 (TODO)
 
-## Scope
+## P-02. Pemisahan Teori dan Kontribusi
+
 (TODO)
 
-## Scientific Principles
+## P-03. Evidence vs Artifact
+
 (TODO)
 
-## Design Principles
+## P-04. Posisi CTI dalam Model
+
 (TODO)
 
-## Evaluation Principles
+## P-05. Vendor Neutral Conceptual Model
+
 (TODO)
 
-## Governance Principles
+## P-06. Traceability
+
 (TODO)
 
-## LOCKED Principles
+---
+
+# Part II — Design Philosophy
+
+## P-07. Actionable Intelligence
+
 (TODO)
 
-## Notes
+## P-08. Operational Definition
+
 (TODO)
+
+## P-09. Capability First
+
+(TODO)
+
+## P-10. Capability Pattern
+
+(TODO)
+
+## P-11. Technical Traceability
+
+(TODO)
+
+## P-12. Explainability
+
+(TODO)
+
+---
+
+# Part III — Engineering Philosophy
+
+## P-13. Research Contribution Layer
+
+(TODO)
+
+## P-14. Validation Principle
+
+(TODO)
+
+---
+
+# Part IV — Evaluation Philosophy
+
+## P-15. Evaluation Object
+
+(TODO)
+
+## P-16. Evaluation Instrument
+
+(TODO)
+
+---
+
+# Traceability
+
+R-00 → R-14
+
+---
+
+# Status
+
+LOCKED
+
+Scientific Constitution
+
+Ground Truth
