@@ -20,7 +20,7 @@ Research Problem — **TODO** (belum dirumuskan).
 R-03.
 
 ## Locked Decisions
-(TODO — belum ada keputusan; menunggu pemilihan gap pada R-03.)
+Existing cybersecurity monitoring approaches provide visualization, detection, threat mapping, prioritization, and operational metrics as separate capabilities. Consequently, they do not provide an integrated operational mechanism that systematically transforms heterogeneous security events into actionable cyber threat intelligence to support operational decision making.
 
 ## Traceability
 - **Predecessor:** R-03. **Successor:** R-05.
