@@ -1,8 +1,8 @@
 # R-07 — Research Matrix
 
 ## Status
-Draft
-<!-- Kerangka dimensi LOCKED; isi sel bergantung R-03..R-06 (TODO). -->
+Status
+LOCKED
 
 ## Purpose
 Menyatukan gap–masalah–tujuan–pertanyaan ke dalam matriks penelitian (CTI
@@ -16,22 +16,51 @@ Struktur matriks + (bila tersedia) pemetaan antar elemen penelitian.
 R-03, R-04, R-05, R-06.
 
 ## Output
-- Kerangka dimensi matriks (LOCKED, di bawah).
-- Isi matriks per baris — **TODO** (bergantung dokumen hulu).
+Output
+
+CTI Research Matrix yang memetakan:
+
+- Research Gap
+- Research Problem
+- Research Objectives
+- Research Questions
+- Concept Backbone
+- Artifact Capabilities
+- Evaluation Criteria
+
+ke dalam satu rantai traceability penelitian.
 
 ## Dependencies
 R-03, R-04, R-05, R-06.
 
 ## Locked Decisions
-**Kerangka dimensi CTI Research Matrix (disepakati pada sesi R-01):**
-1. Research Question (RQ)
-2. Tujuan / Objective
-3. Landasan Teori / Konsep
-4. Konstruk / Variabel
-5. Indikator Operasional
-6. Proposisi / Hipotesis
-7. Pendekatan Analisis
-8. Kontribusi / Output Ilmiah
+Research Matrix terdiri atas rantai ilmiah berikut:
+
+Research Gap
+↓
+
+Research Problem
+↓
+
+Research Objectives
+
+↓
+
+Research Questions
+
+↓
+
+Concept Backbone
+
+↓
+
+Artifact Capabilities
+
+↓
+
+Evaluation Design
+
+Seluruh artefak penelitian harus dapat ditelusuri terhadap rantai ini.
 
 ## Traceability
 - **Predecessor:** R-06. **Successor:** R-08.
