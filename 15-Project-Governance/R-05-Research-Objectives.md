@@ -1,8 +1,7 @@
 # R-05 — Research Objectives
 
 ## Status
-Template
-<!-- Belum pernah dirumuskan dalam sesi LOCKED. Bergantung R-04. -->
+LOCKED
 
 ## Purpose
 Menurunkan tujuan penelitian dari Research Problem.
@@ -20,7 +19,11 @@ Research Objectives — **TODO** (belum dirumuskan).
 R-04.
 
 ## Locked Decisions
-(TODO — belum ada keputusan.)
+O1. Merumuskan model konseptual transformasi informasi keamanan berbasis Cyber Threat Intelligence untuk mendukung pengambilan keputusan operasional.
+
+O2. Merancang artefak berbasis model konseptual yang mampu mentransformasikan security event menjadi actionable intelligence.
+
+O3. Mengevaluasi kemampuan artefak dalam menghasilkan actionable intelligence yang mendukung pengambilan keputusan operasional berdasarkan kriteria yang telah ditetapkan.
 
 ## Traceability
 - **Predecessor:** R-04. **Successor:** R-06.
