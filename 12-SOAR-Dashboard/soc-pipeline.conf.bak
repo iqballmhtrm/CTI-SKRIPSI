@@ -1,0 +1,189 @@
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+
+  ####################################################################
+  # TIME PARSER
+  ####################################################################
+  date {
+    match => [ "@timestamp", "ISO8601" ]
+  }
+
+  ####################################################################
+  # WAZUH JSON PARSER
+  ####################################################################
+  if [service][type] == "wazuh" or [fields][log_type] == "wazuh-alerts" {
+
+    mutate {
+    remove_field => [ "[predecoder][timestamp]" ]
+  }
+
+  mutate { remove_field => [ "[predecoder][timestamp]" ] }
+  json {
+      source => "message"
+      target => "wazuh"
+    }
+
+    mutate {
+      remove_field => ["message"]
+    }
+  }
+
+  ####################################################################
+  # DROP SURICATA STATS
+  ####################################################################
+  if [event_type] == "stats" {
+    drop {}
+  }
+
+  if [suricata][eve][event_type] == "stats" {
+    drop {}
+  }
+
+  ####################################################################
+  # SURICATA JSON PARSER
+  ####################################################################
+ # Parse JSON dari Wazuh / Suricata
+
+if [event][original] {
+
+  mutate {
+    remove_field => [ "[predecoder][timestamp]" ]
+  }
+
+  mutate { remove_field => [ "[predecoder][timestamp]" ] }
+  json {
+    source => "[event][original]"
+  }
+
+}
+  ####################################################################
+  # GEOIP ENRICHMENT
+  ####################################################################
+  if [source][ip] {
+
+    geoip {
+      source => "[source][ip]"
+      target => "source"
+    }
+
+  } else if [wazuh][data][srcip] {
+
+    mutate {
+      copy => {
+        "[wazuh][data][srcip]" => "[source][ip]"
+      }
+    }
+
+    geoip {
+      source => "[source][ip]"
+      target => "source"
+    }
+
+  }
+  
+  ####################################################################
+  # EXTRACT SIGNATURE ID
+  ####################################################################
+  if [wazuh][data][alert][signature_id] {
+
+    mutate {
+      add_field => {
+        "[@metadata][sig_id_str]" => "%{[wazuh][data][alert][signature_id]}"
+      }
+    }
+
+  } else if [suricata][eve][alert][signature_id] {
+
+    mutate {
+      add_field => {
+        "[@metadata][sig_id_str]" => "%{[suricata][eve][alert][signature_id]}"
+      }
+    }
+
+  }
+# ============================================================
+# MITRE ATT&CK Enricher
+# ============================================================
+if [@metadata][sig_id_str] {
+
+  mutate {
+    add_field => {
+      # removed
+    }
+  }
+
+  translate {
+    source => "[@metadata][sig_id_str]"
+    target => "[mitre][technique_id]"
+    dictionary_path => "/etc/logstash/dictionaries/mitre-mapping.yml"
+    fallback => "Unmapped"
+  }
+
+  translate {
+    source => "[mitre][technique_id]"
+    target => "[mitre][technique_name]"
+    dictionary_path => "/etc/logstash/dictionaries/mitre-id-to-name.yml"
+    fallback => "Unmapped"
+  }
+
+}
+  ####################################################################
+  # PYRAMID OF PAIN CLASSIFIER
+  ####################################################################
+ if [mitre][technique_id] and [mitre][technique_id] != "Unmapped" {
+
+  mutate {
+    add_field => {
+      "[pyramid][layer]" => "TTPs"
+    }
+  }
+
+} else if [data][alert][signature] =~ /(?i)(hydra|metasploit|sqlmap|nmap|scan|ssh|brute force)/ {
+
+  mutate {
+    add_field => {
+      "[pyramid][layer]" => "Tools"
+    }
+  }
+
+  } else {
+
+    mutate {
+      add_field => {
+        "[pyramid][layer]" => "IP_Address"
+      }
+    }
+
+  }
+
+}   # PENUTUP FILTER
+
+output {
+  ####################################################################
+  # ELASTICSEARCH OUTPUT
+  ####################################################################
+  elasticsearch {
+
+    hosts => ["https://192.168.56.10:9200"]
+
+    user => "elastic"
+
+    password => "${ELASTIC_PASS}"
+
+    ssl_enabled => true
+
+    ssl_certificate_authorities => [
+      "/etc/logstash/certs/http_ca.crt"
+    ]
+
+    ssl_verification_mode => "none"
+
+    index => "cti-logs-iqbal-%{+YYYY.MM.dd}"
+  }
+
+}
