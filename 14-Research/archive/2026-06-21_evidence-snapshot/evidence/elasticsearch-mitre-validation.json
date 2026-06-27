@@ -1,0 +1,1 @@
+{"_index":"cti-logs-iqbal-2026.06.15","_source":{"@timestamp":"2026-06-15T23:01:10.123Z","data":{"srcip":"192.168.56.1","alert":{"signature_id":1000010,"signature":"[CTI] Nmap SYN Stealth Scan Detected","metadata":{"mitre_tactic_name":["Discovery"]}}},"mitre":{"technique_id":"T1046","technique_name":"Network Service Discovery"}}}

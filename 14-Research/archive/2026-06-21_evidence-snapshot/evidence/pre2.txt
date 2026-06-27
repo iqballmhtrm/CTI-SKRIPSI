@@ -1,0 +1,63 @@
+﻿/etc/logstash/conf.d/soc-pipeline.conf:  if [service][type] == "wazuh" or [fields][log_type] == "wazuh-alerts" {
+/etc/logstash/conf.d/soc-pipeline.conf:  if [wazuh][data][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf:        "[@metadata][sig_id_str]" => "%{[wazuh][data][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf:  } else if [suricata][eve][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf:        "[@metadata][sig_id_str]" => "%{[suricata][eve][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf:# MITRE ATT&CK Enricher
+/etc/logstash/conf.d/soc-pipeline.conf:if [data][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf:      "[@metadata][sig_id_str]" => "%{[data][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf:    source => "[@metadata][sig_id_str]"
+/etc/logstash/conf.d/soc-pipeline.conf:    target => "[mitre][technique_id]"
+/etc/logstash/conf.d/soc-pipeline.conf:    dictionary_path => "/etc/logstash/dictionaries/mitre-mapping.yml"
+/etc/logstash/conf.d/soc-pipeline.conf:    source => "[mitre][technique_id]"
+/etc/logstash/conf.d/soc-pipeline.conf:    target => "[mitre][technique_name]"
+/etc/logstash/conf.d/soc-pipeline.conf:    dictionary_path => "/etc/logstash/dictionaries/mitre-id-to-name.yml"
+/etc/logstash/conf.d/soc-pipeline.conf: if [mitre][technique_id] and [mitre][technique_id] != "Unmapped" {
+/etc/logstash/conf.d/soc-pipeline.conf:} else if [data][alert][signature] =~ /(?i)(hydra|metasploit|sqlmap|nmap|scan|ssh|brute force)/ {
+/etc/logstash/conf.d/99-mitre-normalize.conf:  if [data][alert][signature_id] {
+/etc/logstash/conf.d/99-mitre-normalize.conf:    mutate { add_field => { "[@metadata][sig_id_str]" => "%{[data][alert][signature_id]}" } }
+/etc/logstash/conf.d/99-mitre-normalize.conf:  } else if [alert][signature_id] {
+/etc/logstash/conf.d/99-mitre-normalize.conf:    mutate { add_field => { "[@metadata][sig_id_str]" => "%{[alert][signature_id]}" } }
+/etc/logstash/conf.d/99-mitre-normalize.conf:  } else if [suricata][eve][alert][signature_id] {
+/etc/logstash/conf.d/99-mitre-normalize.conf:    mutate { add_field => { "[@metadata][sig_id_str]" => "%{[suricata][eve][alert][signature_id]}" } }
+/etc/logstash/conf.d/99-mitre-normalize.conf:  } else if [wazuh][data][alert][signature_id] {
+/etc/logstash/conf.d/99-mitre-normalize.conf:    mutate { add_field => { "[@metadata][sig_id_str]" => "%{[wazuh][data][alert][signature_id]}" } }
+/etc/logstash/conf.d/99-mitre-normalize.conf:  if [@metadata][sig_id_str] {
+/etc/logstash/conf.d/99-mitre-normalize.conf:      source => "[@metadata][sig_id_str]"
+/etc/logstash/conf.d/99-mitre-normalize.conf:      target => "[mitre][technique_id]"
+/etc/logstash/conf.d/99-mitre-normalize.conf:      dictionary_path => "/etc/logstash/dictionaries/mitre-mapping.yml"
+/etc/logstash/conf.d/99-mitre-normalize.conf:      source => "[mitre][technique_id]"
+/etc/logstash/conf.d/99-mitre-normalize.conf:      target => "[mitre][technique_name]"
+/etc/logstash/conf.d/99-mitre-normalize.conf:      dictionary_path => "/etc/logstash/dictionaries/mitre-id-to-name.yml"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:  if [service][type] == "wazuh" or [fields][log_type] == "wazuh-alerts" {
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:  if [wazuh][data][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:        "[@metadata][sig_id_str]" => "%{[wazuh][data][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:  } else if [suricata][eve][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:        "[@metadata][sig_id_str]" => "%{[suricata][eve][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:# MITRE ATT&CK Enricher
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:if [data][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:      "[@metadata][sig_id_str]" => "%{[data][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:    source => "[@metadata][sig_id_str]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:    target => "[mitre][technique_id]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:    dictionary_path => "/etc/logstash/dictionaries/mitre-mapping.yml"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:    source => "[mitre][technique_id]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:    target => "[mitre][technique_name]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:    dictionary_path => "/etc/logstash/dictionaries/mitre-id-to-name.yml"
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815: if [mitre][technique_id] and [mitre][technique_id] != "Unmapped" {
+/etc/logstash/conf.d/soc-pipeline.conf.bak.1781473815:} else if [data][alert][signature] =~ /(?i)(hydra|metasploit|sqlmap|nmap|scan|ssh|brute force)/ {
+/etc/logstash/conf.d/soc-pipeline.conf.bak:  if [service][type] == "wazuh" or [fields][log_type] == "wazuh-alerts" {
+/etc/logstash/conf.d/soc-pipeline.conf.bak:  if [wazuh][data][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf.bak:        "[@metadata][sig_id_str]" => "%{[wazuh][data][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:  } else if [suricata][eve][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf.bak:        "[@metadata][sig_id_str]" => "%{[suricata][eve][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:# MITRE ATT&CK Enricher
+/etc/logstash/conf.d/soc-pipeline.conf.bak:if [data][alert][signature_id] {
+/etc/logstash/conf.d/soc-pipeline.conf.bak:      "[@metadata][sig_id_str]" => "%{[data][alert][signature_id]}"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:    source => "[@metadata][sig_id_str]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:    target => "[mitre][technique_id]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:    dictionary_path => "/etc/logstash/dictionaries/mitre-mapping.yml"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:    source => "[mitre][technique_id]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:    target => "[mitre][technique_name]"
+/etc/logstash/conf.d/soc-pipeline.conf.bak:    dictionary_path => "/etc/logstash/dictionaries/mitre-id-to-name.yml"
+/etc/logstash/conf.d/soc-pipeline.conf.bak: if [mitre][technique_id] and [mitre][technique_id] != "Unmapped" {
+/etc/logstash/conf.d/soc-pipeline.conf.bak:} else if [data][alert][signature] =~ /(?i)(hydra|metasploit|sqlmap|nmap|scan|ssh|brute force)/ {

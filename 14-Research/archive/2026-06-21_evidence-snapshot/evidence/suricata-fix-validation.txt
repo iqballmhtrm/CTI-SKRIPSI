@@ -1,0 +1,38 @@
+﻿LAPORAN VALIDASI PERBAIKAN SURICATA
+====================================
+
+A. Perubahan yang Dilakukan:
+- Backup /etc/suricata/suricata.yaml
+- Mengganti 'interface: enp0s3' menjadi 'interface: enp0s8' pada konfigurasi af-packet dan pcap.
+- Restart systemctl suricata.
+
+B. Backup yang Dibuat:
+- Lokasi: /etc/suricata/suricata.yaml.backup_...
+
+C. Alert yang Berhasil Muncul (Nmap):
+- NIHIL (0 Alert). Pengecekan real-time pada eve.json di interface enp0s8 tidak menemukan satupun event_type: alert.
+
+D. Status Elasticsearch:
+- Tidak ada dokumen alert yang masuk ke indeks Kibana/Elasticsearch.
+
+E. Status Kibana:
+- Kosong.
+
+F. Status MITRE:
+- Gagal dipetakan.
+
+G. Apakah sistem siap untuk Hydra dan Nikto?
+- BELUM SIAP.
+
+====================================
+ROOT CAUSE ANALYSIS (LANJUTAN)
+====================================
+Penyebab berikutnya kegagalan deteksi:
+1. Ketiadaan Rules Kustom: Meskipun antarmuka enp0s8 sekarang dipantau dengan benar, Nmap tidak memicu peringatan karena file 'custom.rules' (yang seharusnya berisi aturan spesifik deteksi scan) tidak ada di /etc/suricata/rules/ dan tidak dideklarasikan di dalam suricata.yaml.
+2. Default Rules Tidak Memadai: Rules Emerging Threats default (suricata.rules) gagal mendeteksi Nmap SYN scan dasar tanpa konfigurasi agresif, sehingga rules lokal absolut diperlukan.
+
+Langkah Perbaikan Berikutnya yang Dibutuhkan:
+- Membuat file /etc/suricata/rules/custom.rules di VM.
+- Mengisi file tersebut dengan SID khusus untuk mendeteksi Nmap.
+- Mendaftarkan ' - custom.rules' di dalam suricata.yaml pada bagian rule-files.
+- Restart Suricata.

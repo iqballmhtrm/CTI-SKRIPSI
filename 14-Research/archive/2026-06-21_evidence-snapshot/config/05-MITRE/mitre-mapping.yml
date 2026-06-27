@@ -1,0 +1,19 @@
+# MITRE mapping for Logstash translate plugin
+# Created: 2026-06-15
+# SID -> MITRE Technique ID
+#
+# Add new SIDs here and ensure file is deployed to /etc/logstash/dictionaries/mitre-mapping.yml
+
+2013504: T1105
+2033966: T1102
+2033967: T1102
+
+# Custom CTI-LAB SIDs mapped to MITRE ATT&CK
+9000001: T1046
+9000002: T1110.001
+9000003: T1110.001
+9000004: T1595
+
+# Newly mapped SIDs identified during audit
+2200121: T1046
+2200025: T1046
