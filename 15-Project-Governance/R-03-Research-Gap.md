@@ -2,7 +2,7 @@
 
 ## Status
 Draft
-<!-- Input (Gap Extraction Matrix) LOCKED; OUTPUT (pernyataan gap terpilih) belum diputuskan → TODO. -->
+Existing studies have addressed log visualization, threat detection, MITRE ATT&CK mapping, alert prioritization, and operational metrics individually. However, there is still no integrated operational framework that transforms heterogeneous security events into actionable cyber threat intelligence through contextual enrichment, standardized threat mapping, operational prioritization, and measurable detection–response performance within a unified ELK Stack environment.
 
 ## Purpose
 Menetapkan kesenjangan penelitian dari Problem Domain & sintesis literatur.
