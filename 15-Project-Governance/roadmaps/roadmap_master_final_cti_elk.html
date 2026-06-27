@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans,"Anthropic Sans",sans-serif);color:var(--color-text-primary);background:transparent}
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.section-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px}
+.badge-green{background:var(--color-background-success);color:var(--color-text-success)}
+.badge-amber{background:var(--color-background-warning);color:var(--color-text-warning)}
+.badge-blue{background:var(--color-background-info);color:var(--color-text-info)}
+.badge-gray{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.pill{display:inline-block;font-size:10px;font-weight:500;padding:1px 6px;border-radius:10px;border:0.5px solid currentColor}
+.flow-arrow{color:var(--color-text-secondary);font-size:18px;line-height:1;text-align:center;padding:2px 0}
+.phase-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.phase-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:10px 8px;cursor:pointer;transition:border-color .15s}
+.phase-box:hover{border-color:var(--color-border-secondary)}
+.phase-num{font-size:10px;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px}
+.phase-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.phase-target{font-size:11px;color:var(--color-text-secondary)}
+.phase-box.f1{border-top:2px solid #1D9E75}
+.phase-box.f2{border-top:2px solid #3B8BD4}
+.phase-box.f3{border-top:2px solid #7F77DD}
+.phase-box.f4{border-top:2px solid #EF9F27}
+.phase-box.f5{border-top:2px solid #D85A30}
+.phase-box.f6{border-top:2px solid #D4537E}
+.pillar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pillar{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:8px 10px;cursor:pointer;transition:background .15s}
+.pillar:hover{background:var(--color-background-primary)}
+.pillar-num{font-size:10px;color:var(--color-text-secondary);margin-bottom:2px}
+.pillar-name{font-size:12px;font-weight:500;margin-bottom:4px}
+.demo-step{display:flex;align-items:flex-start;gap:10px;padding:6px 0}
+.demo-step:not(:last-child){border-bottom:0.5px solid var(--color-border-tertiary)}
+.step-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.step-text{font-size:12px;color:var(--color-text-secondary)}
+.step-label{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.tier-row{display:flex;gap:6px;flex-wrap:wrap}
+.tier-item{font-size:11px;padding:3px 8px;border-radius:4px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.tier-a{background:var(--color-background-success);color:var(--color-text-success);border-color:transparent}
+.tier-b{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+.tier-c{background:var(--color-background-secondary);color:var(--color-text-secondary);border-color:transparent}
+.arch-flow{display:flex;align-items:stretch;gap:0}
+.arch-node{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:8px 10px;min-width:0;flex:1;cursor:pointer;transition:background .15s}
+.arch-node:hover{background:var(--color-background-primary)}
+.arch-node-label{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.arch-node-sub{font-size:10px;color:var(--color-text-secondary);line-height:1.4}
+.arch-arrow{display:flex;align-items:center;padding:0 4px;color:var(--color-text-secondary);font-size:14px;flex-shrink:0}
+.principle-box{background:var(--color-background-secondary);border-left:3px solid var(--color-border-info);border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:6px}
+.principle-label{font-size:11px;font-weight:500;color:var(--color-text-info);margin-bottom:2px}
+.principle-text{font-size:12px;color:var(--color-text-secondary)}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Roadmap Master Final CTI ELK Stack — Topologi arsitektur, 8 pilar penelitian, 6 fase eksekusi, dan demo flow sidang</h2>
+
+<div style="padding:16px 0">
+
+<!-- HEADER -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+  <div>
+    <div style="font-size:15px;font-weight:500">Roadmap Master Final — CTI ELK Stack</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">SOC Integration · SOAR Response · MTTD/MTTR Measurement</div>
+  </div>
+  <div style="display:flex;gap:6px">
+    <span class="badge badge-green">8 pilar</span>
+    <span class="badge badge-blue">6 fase</span>
+    <span class="badge badge-amber">Basic license</span>
+  </div>
+</div>
+
+<!-- ARSITEKTUR DATA FLOW -->
+<div class="section-label">Arsitektur data flow</div>
+<div class="arch-flow" style="margin-bottom:16px">
+  <div class="arch-node" onclick="sendPrompt('Jelaskan sumber data serangan di sistem CTI ini: Nmap, Hydra, Nikto, Suricata, Wazuh')">
+    <div class="arch-node-label">Sumber serangan</div>
+    <div class="arch-node-sub">Nmap · Hydra<br>Suricata · Wazuh · Nikto</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-node" onclick="sendPrompt('Bagaimana Filebeat mengirim log dari Victim Node ke Logstash?')">
+    <div class="arch-node-label">Filebeat</div>
+    <div class="arch-node-sub">Log shipper<br>Beats protocol</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-node" onclick="sendPrompt('Jelaskan pipeline Logstash: parsing, GeoIP, MITRE, Pyramid, Threat Scoring, Webhook')">
+    <div class="arch-node-label">Logstash</div>
+    <div class="arch-node-sub">Parse · GeoIP<br>MITRE · Pyramid<br>Scoring · Webhook</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-node" onclick="sendPrompt('Index apa saja yang ada di Elasticsearch untuk sistem CTI ini?')">
+    <div class="arch-node-label">Elasticsearch</div>
+    <div class="arch-node-sub">soc-alerts-*<br>cti-threat-score<br>Transform active</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-node" onclick="sendPrompt('Fitur Kibana apa saja yang digunakan sebagai Command Center SOC?')">
+    <div class="arch-node-label">Kibana</div>
+    <div class="arch-node-sub">Dashboard · Cases<br>Detection Rules<br>ES|QL · Canvas</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-node" onclick="sendPrompt('Bagaimana Webhook Connector menghubungkan Kibana Alerting ke SOAR API?')">
+    <div class="arch-node-label">Webhook → SOAR</div>
+    <div class="arch-node-sub">Block IP<br>Lock Root<br>Forensics</div>
+  </div>
+</div>
+
+<!-- PRINSIP ARSITEKTUR -->
+<div class="section-label">Prinsip arsitektur</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+  <div class="principle-box" onclick="sendPrompt('Mengapa Kibana adalah Command Center dan bukan SOAR yang menjadi pusat operasional?')">
+    <div class="principle-label">Kibana = Command Center</div>
+    <div class="principle-text">Semua visualisasi, investigasi, incident management, analytics, dan reporting</div>
+  </div>
+  <div class="principle-box" onclick="sendPrompt('Mengapa SOAR dirancang hanya sebagai execution engine dan bukan dashboard?')">
+    <div class="principle-label">SOAR = Execution Engine only</div>
+    <div class="principle-text">Hanya endpoint aksi respons — bukan dashboard, bukan visualisasi</div>
+  </div>
+  <div class="principle-box" onclick="sendPrompt('Bagaimana alur kerja lengkap dari Alert di Kibana ke eksekusi respons di SOAR?')">
+    <div class="principle-label">Alert → Case → SOAR</div>
+    <div class="principle-text">Alert → Case → Analyst Decision → Webhook → SOAR API → Response</div>
+  </div>
+</div>
+
+<!-- 8 PILAR PENELITIAN -->
+<div class="section-label">8 pilar penelitian — semua target: Complete</div>
+<div class="pillar-grid" style="margin-bottom:16px">
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 1 Visualisasi CTI: Dashboard, Lens, ES|QL untuk Total Alerts, Trend, Top IP, Threat Score')">
+    <div class="pillar-num">Pilar 1</div>
+    <div class="pillar-name">Visualisasi CTI</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">Dashboard</span><span class="pill" style="color:var(--color-text-info)">Lens</span><span class="pill" style="color:var(--color-text-info)">ES|QL</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 2 MITRE ATT&CK: Technique Count, Trend, Ranking, Coverage, Mapped vs Unmapped')">
+    <div class="pillar-num">Pilar 2</div>
+    <div class="pillar-name">MITRE ATT&CK</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">Lens</span><span class="pill" style="color:var(--color-text-info)">ES|QL</span><span class="pill" style="color:var(--color-text-info)">Canvas</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 3 Pyramid of Pain: Hash, IP, Domain, Network Artifact, Tool, TTP di dashboard')">
+    <div class="pillar-num">Pilar 3</div>
+    <div class="pillar-name">Pyramid of Pain</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">Lens</span><span class="pill" style="color:var(--color-text-info)">Dashboard</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 4 Threat Intelligence: GeoIP, Country Ranking, Threat Origin, IOC Statistics di Maps')">
+    <div class="pillar-num">Pilar 4</div>
+    <div class="pillar-name">Threat Intelligence</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">Maps</span><span class="pill" style="color:var(--color-text-info)">Lens</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 5 SOC Operations: Cases, Timeline, Detection Rules, Incident Lifecycle di Elastic Security')">
+    <div class="pillar-num">Pilar 5</div>
+    <div class="pillar-name">SOC Operations</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">Cases</span><span class="pill" style="color:var(--color-text-info)">Timeline</span><span class="pill" style="color:var(--color-text-info)">Rules</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 6 SOAR Response: endpoint POST block-ip, forensics, lock-root — bukan dashboard')">
+    <div class="pillar-num">Pilar 6</div>
+    <div class="pillar-name">SOAR Response</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">API only</span><span class="pill" style="color:var(--color-text-info)">Webhook</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 7 MTTD: 30 iterasi, Average, Min, Max, Trend — cara pengukuran dan visualisasi')">
+    <div class="pillar-num">Pilar 7</div>
+    <div class="pillar-name">MTTD</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">30 iterasi</span><span class="pill" style="color:var(--color-text-info)">Lens</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+  <div class="pillar" onclick="sendPrompt('Jelaskan pilar 8 MTTR: 30 iterasi, Average, Min, Max, Trend — cara pengukuran via SOAR dan dashboard')">
+    <div class="pillar-num">Pilar 8</div>
+    <div class="pillar-name">MTTR</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill" style="color:var(--color-text-info)">30 iterasi</span><span class="pill" style="color:var(--color-text-info)">SOAR</span></div>
+    <div style="margin-top:6px"><span class="badge badge-green">Complete</span></div>
+  </div>
+</div>
+
+<!-- FITUR ELASTIC TIER -->
+<div class="section-label">Fitur Elastic yang dimaksimalkan</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+  <div class="card">
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-success);margin-bottom:8px">Tier A — Wajib</div>
+    <div class="tier-row">
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Dashboard Kibana untuk penelitian CTI')">Dashboard</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Lens Kibana untuk visualisasi CTI')">Lens</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur ES|QL untuk kalkulasi MTTD dan MTTR')">ES|QL</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Maps dan GeoIP untuk Threat Intelligence')">Maps</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Cases di Elastic Security untuk SOC workflow')">Cases</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Detection Rules di Elastic Security')">Detection Rules</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Alerting dan Webhook Connector di Kibana')">Alerting</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Canvas Kibana untuk executive reporting sidang')">Canvas</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Security Overview di Elastic Security')">Security</span>
+      <span class="tier-item tier-a" onclick="sendPrompt('Analisis fitur Transform di Elasticsearch untuk threat scoring')">Transform</span>
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-info);margin-bottom:8px">Tier B — Direkomendasikan</div>
+    <div class="tier-row">
+      <span class="tier-item tier-b" onclick="sendPrompt('Analisis fitur Timeline di Elastic Security untuk investigasi forensik')">Timeline</span>
+      <span class="tier-item tier-b" onclick="sendPrompt('Analisis fitur Data Views di Kibana')">Data Views</span>
+      <span class="tier-item tier-b" onclick="sendPrompt('Analisis fitur Stack Monitoring di Kibana untuk health cluster')">Stack Monitoring</span>
+      <span class="tier-item tier-b" onclick="sendPrompt('Analisis fitur Index Management di Kibana')">Index Management</span>
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px">Tier C — Opsional (Trial)</div>
+    <div class="tier-row">
+      <span class="tier-item tier-c" onclick="sendPrompt('Analisis fitur Attack Discovery di Elastic Security — berapa nilai akademiknya untuk skripsi CTI?')">Attack Discovery</span>
+      <span class="tier-item tier-c" onclick="sendPrompt('Analisis fitur AI Assistant di Kibana untuk penelitian CTI')">AI Assistant</span>
+      <span class="tier-item tier-c" onclick="sendPrompt('Analisis fitur Machine Learning Anomaly Detection untuk penelitian CTI — apakah perlu Trial?')">Machine Learning</span>
+    </div>
+  </div>
+</div>
+
+<!-- 6 FASE ROADMAP -->
+<div class="section-label">Roadmap eksekusi — 6 fase</div>
+<div class="phase-row" style="margin-bottom:16px">
+  <div class="phase-box f1" onclick="sendPrompt('Detail TASK-C2 dan TASK-C1 di Fase 1 System Completion: apa yang harus diselesaikan untuk End-to-End Integration PASS?')">
+    <div class="phase-num">Fase 1</div>
+    <div class="phase-title">System Completion</div>
+    <div class="phase-target">TASK-C2, TASK-C1</div>
+    <div style="margin-top:6px"><span class="badge badge-amber">In Progress</span></div>
+  </div>
+  <div class="phase-box f2" onclick="sendPrompt('Detail Fase 2 SOC Operation: Cases, Detection Rules, Alerting, Timeline — cara setup Incident Lifecycle')">
+    <div class="phase-num">Fase 2</div>
+    <div class="phase-title">SOC Operation</div>
+    <div class="phase-target">Cases · Rules · Timeline</div>
+    <div style="margin-top:6px"><span class="badge badge-gray">Pending</span></div>
+  </div>
+  <div class="phase-box f3" onclick="sendPrompt('Detail Fase 3 CTI Enrichment: MITRE Expansion, Maps, Threat Intel Dashboard — cara implementasinya')">
+    <div class="phase-num">Fase 3</div>
+    <div class="phase-title">CTI Enrichment</div>
+    <div class="phase-target">MITRE · Maps · Intel</div>
+    <div style="margin-top:6px"><span class="badge badge-gray">Pending</span></div>
+  </div>
+  <div class="phase-box f4" onclick="sendPrompt('Detail Fase 4 Metrics Validation: bagaimana melakukan 30 iterasi MTTD dan MTTR secara terstruktur?')">
+    <div class="phase-num">Fase 4</div>
+    <div class="phase-title">Metrics Validation</div>
+    <div class="phase-target">MTTD · MTTR 30 iter.</div>
+    <div style="margin-top:6px"><span class="badge badge-gray">Pending</span></div>
+  </div>
+  <div class="phase-box f5" onclick="sendPrompt('Detail Fase 5 Advanced Elastic: ES|QL, Canvas, Executive Dashboard — cara membuat laporan eksekutif')">
+    <div class="phase-num">Fase 5</div>
+    <div class="phase-title">Advanced Elastic</div>
+    <div class="phase-target">ES|QL · Canvas · Exec</div>
+    <div style="margin-top:6px"><span class="badge badge-gray">Pending</span></div>
+  </div>
+  <div class="phase-box f6" onclick="sendPrompt('Detail Fase 6 Documentation: apa saja screenshot dan evidence yang dibutuhkan untuk Bab 4 dan Bab 5 skripsi?')">
+    <div class="phase-num">Fase 6</div>
+    <div class="phase-title">Documentation</div>
+    <div class="phase-target">Screenshot · Bab 4 · Bab 5</div>
+    <div style="margin-top:6px"><span class="badge badge-gray">Pending</span></div>
+  </div>
+</div>
+
+<!-- DEMO FLOW SIDANG -->
+<div class="section-label">Demo flow sidang — kondisi akhir sistem</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+  <div class="card">
+    <div style="font-size:12px;font-weight:500;margin-bottom:8px">Alur demonstrasi</div>
+    <div class="demo-step" onclick="sendPrompt('Bagaimana menjalankan serangan Hydra SSH brute force untuk demo sidang?')" style="cursor:pointer">
+      <div class="step-dot" style="background:#E24B4A"></div>
+      <div><div class="step-label">Hydra SSH Brute Force</div><div class="step-text">ATTACKER-NODE → VICTIM-NODE</div></div>
+    </div>
+    <div class="demo-step">
+      <div class="step-dot" style="background:#EF9F27"></div>
+      <div><div class="step-label">Suricata Alert</div><div class="step-text">eve.json → Filebeat → Logstash</div></div>
+    </div>
+    <div class="demo-step">
+      <div class="step-dot" style="background:#7F77DD"></div>
+      <div><div class="step-label">MITRE Mapping + Threat Scoring</div><div class="step-text">Logstash enrichment pipeline</div></div>
+    </div>
+    <div class="demo-step">
+      <div class="step-dot" style="background:#1D9E75"></div>
+      <div><div class="step-label">Elasticsearch → Detection Rule</div><div class="step-text">Alert triggered → Case created</div></div>
+    </div>
+    <div class="demo-step">
+      <div class="step-dot" style="background:#3B8BD4"></div>
+      <div><div class="step-label">Analyst Investigation</div><div class="step-text">Kibana Cases + Timeline</div></div>
+    </div>
+    <div class="demo-step">
+      <div class="step-dot" style="background:#D85A30"></div>
+      <div><div class="step-label">Webhook → SOAR API</div><div class="step-text">Block IP executed</div></div>
+    </div>
+    <div class="demo-step" style="border-bottom:none">
+      <div class="step-dot" style="background:#1D9E75"></div>
+      <div><div class="step-label">MTTD + MTTR Recorded</div><div class="step-text">Dashboard updated real-time</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-size:12px;font-weight:500;margin-bottom:8px">Hasil akhir yang dibuktikan</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="background:var(--color-background-success);border-radius:8px;padding:10px 12px">
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-success)">Sistem CTI Operasional End-to-End</div>
+        <div style="font-size:11px;color:var(--color-text-success);margin-top:2px;opacity:.8">berbasis ELK Stack dengan SOC dan SOAR Response</div>
+      </div>
+      <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.7">
+        <div>✓ Log collection dari Suricata dan Wazuh</div>
+        <div>✓ Enrichment: GeoIP, MITRE, Pyramid, Score</div>
+        <div>✓ Dashboard CTI real-time di Kibana</div>
+        <div>✓ Incident lifecycle via Cases</div>
+        <div>✓ MTTD dan MTTR terukur (30 iterasi)</div>
+        <div>✓ Respons otomatis via SOAR API</div>
+        <div>✓ Executive reporting via Canvas</div>
+      </div>
+      <div style="margin-top:4px;cursor:pointer" onclick="sendPrompt('Apa yang perlu dipersiapkan agar demo sidang berjalan lancar tanpa kendala teknis?')">
+        <span class="badge badge-blue" style="cursor:pointer">→ Persiapan demo sidang ↗</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
