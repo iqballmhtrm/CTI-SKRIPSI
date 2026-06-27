@@ -1,8 +1,7 @@
 # R-06 — Research Questions
 
 ## Status
-Template
-<!-- Research Owner berniat menyediakan rumusan resmi, tetapi belum ditempelkan. TODO. -->
+LOCKED
 
 ## Purpose
 Merumuskan pertanyaan penelitian dari tujuan.
@@ -20,7 +19,11 @@ Research Questions — **TODO** (belum tersedia).
 R-04, R-05.
 
 ## Locked Decisions
-(TODO — belum ada keputusan.)
+RQ1. Bagaimana model konseptual transformasi informasi keamanan berbasis Cyber Threat Intelligence dapat dirumuskan untuk mendukung pengambilan keputusan operasional?
+
+RQ2. Bagaimana artefak yang dirancang berdasarkan model konseptual tersebut mampu mentransformasikan security event menjadi actionable intelligence?
+
+RQ3. Bagaimana kemampuan artefak dalam menghasilkan actionable intelligence untuk mendukung pengambilan keputusan operasional berdasarkan hasil evaluasi?
 
 ## Traceability
 - **Predecessor:** R-05. **Successor:** R-07.
