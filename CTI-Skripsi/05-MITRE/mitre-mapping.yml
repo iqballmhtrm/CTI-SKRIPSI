@@ -17,3 +17,8 @@
 # Newly mapped SIDs identified during audit
 2200121: T1046
 2200025: T1046
+
+# Research experiment SIDs (B-03) — 30-iteration controlled experiment
+1000010: T1046
+1000020: T1110.001
+1000030: T1595.002
