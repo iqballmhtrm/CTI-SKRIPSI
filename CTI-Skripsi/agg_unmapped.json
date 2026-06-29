@@ -1,1 +1,0 @@
-{"size":0,"query":{"bool":{"must":[{"match":{"event_type":"alert"}}],"must_not":[{"exists":{"field":"mitre.technique_id"}}]}},"aggs":{"by_alert_sig":{"terms":{"field":"alert.signature_id","size":50,"order":{"_count":"desc"}}},"by_suricata_sig":{"terms":{"field":"suricata.eve.alert.signature_id","size":50,"order":{"_count":"desc"}}}}}
