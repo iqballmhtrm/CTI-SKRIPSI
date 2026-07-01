@@ -2,7 +2,7 @@
 
 **Judul:** Optimisasi Visualisasi Data Log dan Alert Siber Melalui Dashboard ELK Stack  
 **Peneliti:** Muhammad Iqbal Muhtaram — NIM 2241720265 — Polinema  
-**Tanggal Audit:** 2026-06-30  
+**Tanggal Audit:** 2026-07-01 (diperbarui)  
 **Status:** VALIDATED
 
 ---
@@ -198,9 +198,12 @@ SOC SERVER (.10)
   │         T1=waktu dokumen masuk ES (first_alert timestamp)
   │
   ├─ Kibana
-  │    └─ dashboard-final-v5.ndjson (13 objek, 16KB)
-  │         Visualisasi: port scan, brute force, web scan, MITRE heatmap,
-  │         threat actor, Pyramid of Pain
+  │    └─ dashboard-final-v5.ndjson (21 panel)
+  │         Visualisasi: KPI (MTTD/MTTR/Total/GeoCount), Timeline,
+  │         MITRE technique bar, Pyramid of Pain, Validation bar,
+  │         Threat Score table, Benchmark bar, SOAR metrics,
+  │         Attack Origin Map (Kibana Maps / GeoIP publik)
+  │    └─ 5x Saved Search (all/nmap/hydra/nikto/mitre-mapped)
   │
   └─ SOAR Dashboard (Flask :5000)
        └─ /webhook ← HTTP output Logstash
@@ -230,7 +233,7 @@ SOC SERVER (.10)
 | `14-Research/protocols/cti-unblock.sh` | FINAL | Reset iptables antar-iterasi | ✅ Primer |
 | `03-Suricata/custom.rules` | FINAL | 3 SID penelitian (1000010/20/30) | ✅ Primer |
 | `05-MITRE/mitre-mapping.yml` | FINAL | Kamus SID→MITRE | ✅ Primer |
-| `06-Dashboard/dashboard-final-v5.ndjson` | FINAL | Export Kibana 13 objek | ✅ Primer |
+| `06-Dashboard/dashboard-final-v5.ndjson` | FINAL | Export Kibana 21 panel (incl. Attack Origin Map) | ✅ Primer |
 | `12-SOAR-Dashboard/app/soar_app.py` | FINAL | Aplikasi SOAR Flask | ✅ Primer |
 
 ### 4.2 Bukti Validasi
@@ -271,7 +274,24 @@ SOC SERVER (.10)
 | `09-Evidence/EVIDENCE_SOURCE_CLASSIFICATION.md` | Klasifikasi sumber bukti (21 Jun 2026) | ✅ Tracked |
 | `09-Evidence/elasticsearch-mitre-validation.json` | Contoh ES doc dengan enrichment MITRE | ✅ Tracked |
 
-### 4.5 Berkas Tracked tapi Bermasalah
+### 4.5 Bukti GeoIP dan Attack Origin Map
+
+| Item | Nilai | Status |
+|------|-------|--------|
+| Dokumen dengan koordinat GeoIP valid | 36 | ✅ Ada di ES |
+| Asal negara | Amerika Serikat (20), Singapura (16) | ✅ Terverifikasi |
+| Field GeoIP | `source.geo.location` (geo_point) | ✅ Ter-enriched |
+| Panel visualisasi | `cti-attack-origin-map` (Kibana Maps, tipe `map`) | ✅ Deploy |
+| Layer peta | EMS_TMS basemap + ES_SEARCH GEOJSON_VECTOR | ✅ Konfigurasi |
+| Referensi Bab IV | `11-Bab4/implementasi_dan_pengujian.md` §4.5 panel 21 | ✅ Tracked |
+
+> **Catatan:** 36 dokumen GeoIP berasal dari trafik eksternal nyata yang masuk ke
+> VICTIM-NODE sebelum jaringan *host-only* dikunci. IP internal 192.168.56.x tidak
+> memiliki GeoIP (private range). Attack Origin Map menampilkan trafik eksternal ini.
+
+---
+
+### 4.6 Berkas Tracked tapi Bermasalah
 
 | Berkas | Masalah |
 |--------|---------|
@@ -328,12 +348,15 @@ Berkas query runtime berikut tidak mewakili bukti penelitian:
 nmap -sS -p- 192.168.56.106 (ATTACKER .110)
   → Suricata SID 1000010 alert (eve.json)
   → Filebeat → Logstash (soc-pipeline.conf)
+  → GeoIP enrichment → source.geo.location (jika IP publik)
   → mitre-mapping.yml: 1000010 → T1046 "Network Service Discovery"
+  → pyramid.layer = "TTPs"
   → cti-logs-iqbal-* index (ES)
-  → Kibana panel "Port Scan Activity" (dashboard-final-v5.ndjson)
+  → Kibana panel "MITRE Technique Bar" (dashboard-final-v5.ndjson)
+  → Kibana panel "Attack Origin Map" cti-attack-origin-map (IP publik)
   → SOAR webhook /webhook (attack_type="nmap_scan")
   → iterations.csv baris 1-10 (MTTD avg 2,5s; NO_MITIG)
-  → Bab IV §Skenario 1, Bab V §Analisis Nmap
+  → Bab IV §4.5 panel 11 (MITRE bar), §4.6 §Skenario 1
 ```
 
 **Hydra:**
@@ -373,7 +396,7 @@ nikto -h http://192.168.56.106 (ATTACKER .110)
 | Aturan Suricata (3 SID) | ✅ Lengkap | `03-Suricata/custom.rules` |
 | Pemetaan MITRE | ✅ Lengkap | `05-MITRE/mitre-mapping.yml` |
 | Pipeline Logstash | ✅ Lengkap | `02-ELK/soc-pipeline.conf`, `99-mitre-normalize.conf` |
-| Dashboard Kibana | ✅ Lengkap | `06-Dashboard/dashboard-final-v5.ndjson` |
+| Dashboard Kibana (21 panel) | ✅ Lengkap | `06-Dashboard/dashboard-final-v5.ndjson` |
 | SOAR Flask | ✅ Lengkap | `12-SOAR-Dashboard/app/soar_app.py` |
 | Dataset 30 iterasi | ✅ Lengkap | `14-Research/datasets/iterations.csv` |
 | Protokol eksperimen | ✅ Lengkap | `14-Research/protocols/` (4 berkas) |
@@ -382,3 +405,6 @@ nikto -h http://192.168.56.106 (ATTACKER .110)
 | Konfigurasi Wazuh | ⚠️ Kosong | `04-Wazuh/ossec.conf` (perlu sudo di VM) |
 | Screenshot dashboard | ⚠️ Ada di arsip | `14-Research/archive/.../screenshots/` (tidak dicommit) |
 | Topology diagram | ✅ Tersedia | `01-Topologi/topologi_penelitian_elk_cti.png` (untracked) |
+| GeoIP Attack Origin Map | ✅ Lengkap | 36 dok publik (USA:20, SG:16), panel `cti-attack-origin-map` |
+| Saved Search Discover | ✅ Lengkap | 5 saved searches (all/nmap/hydra/nikto/mitre-mapped) |
+| Jumlah alert penelitian di ES | ✅ Terverifikasi | SID 1000010: 180, SID 1000020: 64, SID 1000030: 111 (total 355) |

@@ -126,14 +126,46 @@ insiden tercatat di SOAR nyaris seketika pada saat *event* diproses pipeline.
 
 ## 4.5 Implementasi Visualisasi Kibana CTI Dashboard
 
-Dashboard CTI Kibana menggunakan indeks `cti-logs-iqbal-*` sebagai sumber data utama.
-Panel-panel visualisasi yang diimplementasikan mencakup:
+Dashboard CTI Kibana dengan ID `dashboard-final-cti` dibangun di atas indeks `cti-logs-iqbal-*`
+dan terdiri dari 21 panel yang diorganisasikan dalam lima lapisan analisis berurutan.
 
-- Distribusi teknik MITRE ATT&CK (*pie chart* dan *bar chart* per teknik dan taktik)
-- Distribusi lapisan Pyramid of Pain
-- *Timeline* alert per taktik MITRE
-- Tabel *Top Threat Actors* (agregasi per IP sumber serangan)
-- Metrik total alert ter-*mapping* MITRE
+**Tabel 4.6 — Inventaris Panel Dashboard CTI (21 Panel)**
+
+| No | ID Panel | Tipe | Lapisan | Konten Visualisasi |
+|---:|----------|------|---------|-------------------|
+| 1 | `cti-dashboard-title` | Markdown | Header | Judul dan identitas penelitian |
+| 2 | `v3-mttd-metric` | Metric | Layer 1: KPI | Rata-rata MTTD (avg 2,0 s) |
+| 3 | `v3-mttr-metric` | Metric | Layer 1: KPI | Rata-rata MTTR (avg 4,2 s) |
+| 4 | `cti-kpi-total-alerts` | Metric | Layer 1: KPI | Total alert masuk |
+| 5 | `cti-kpi-unique-ip` | Metric | Layer 1: KPI | Jumlah IP penyerang unik |
+| 6 | `cti-kpi-mapped-mitre` | Metric | Layer 1: KPI | Persentase alert ter-*mapping* MITRE |
+| 7 | `cti-kpi-active-sources` | Metric | Layer 1: KPI | Jumlah sumber serangan aktif |
+| 8 | `cti-divider-l2` | Markdown | Divider | Pemisah lapisan Layer 2 |
+| 9 | `cti-alert-timeline-all` | Area Chart | Layer 2: Timeline | *Timeline* frekuensi alert per taktik MITRE |
+| 10 | `cti-divider-l3` | Markdown | Divider | Pemisah lapisan Layer 3 |
+| 11 | `cti-mitre-technique-bar` | Bar Chart | Layer 3: MITRE | Distribusi teknik ATT&CK per SID |
+| 12 | `v3-pyramid-layer-bar` | Bar Chart | Layer 3: Pyramid | Distribusi lapisan Pyramid of Pain |
+| 13 | `cti-validation-combined-bar` | Bar Chart | Layer 3: Validasi | Perbandingan MTTD/MTTR antar skenario |
+| 14 | `cti-divider-l4` | Markdown | Divider | Pemisah lapisan Layer 4 |
+| 15 | `v3-threat-score-table` | Data Table | Layer 4: Intelijen | Tabel ancaman berperingkat (*Threat Score*) |
+| 16 | `cti-mttd-mttr-benchmark-bar` | Bar Chart | Layer 4: Intelijen | Benchmark MTTD & MTTR per iterasi |
+| 17 | `cti-soar-divider` | Markdown | Divider | Pemisah SOAR Response |
+| 18 | `cti-soar-research-count` | Metric | SOAR | Jumlah insiden SOAR penelitian |
+| 19 | `cti-soar-action-bar` | Bar Chart | SOAR | Distribusi tindakan respons SOAR |
+| 20 | `cti-map-divider` | Markdown | Divider | Pemisah Layer 5 (Dari Mana?) |
+| 21 | `cti-attack-origin-map` | **Kibana Maps** | Layer 5: Geo | *Attack Origin Map*: sebaran geografis sumber serangan |
+
+Panel ke-21 (`cti-attack-origin-map`) menggunakan tipe objek `map` dari Kibana Maps,
+bukan tipe `visualization` biasa. Peta ini menampilkan titik serangan dari IP publik
+eksternal yang diperoleh dari proses *GeoIP enrichment* Logstash pada field `source.geo.location`.
+Dalam data penelitian, terdapat 36 dokumen dengan koordinat GeoIP valid: 20 dari Amerika Serikat
+dan 16 dari Singapura — trafik eksternal yang masuk ke VICTIM-NODE sebelum jaringan
+*host-only* dikunci. Peta menggunakan basemap EMS (Elastic Maps Service) dengan layer
+dokumen ES jenis `GEOJSON_VECTOR` pada field `source.geo.location`.
+
+Lima *saved search* Discover tersedia sebagai pendukung investigasi ad-hoc:
+`discover-all-alerts`, `discover-nmap-only`, `discover-hydra-only`, `discover-nikto-only`,
+dan `discover-mitre-mapped`.
 
 ---
 
