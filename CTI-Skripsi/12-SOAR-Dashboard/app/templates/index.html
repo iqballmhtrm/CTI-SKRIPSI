@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTI SOAR Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .dashboard-header { margin-top: 20px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row dashboard-header">
+            <div class="col">
+                <h1 class="text-danger border-bottom pb-2">🛡️ CTI SOAR Dashboard (Active Response)</h1>
+                <p class="text-muted">Real-time Incident Triage & Automated Playbooks</p>
+            </div>
+        </div>
+
+        <div id="alert-container"></div>
+
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <div class="card bg-primary text-white text-center p-2 shadow-sm">
+                    <h6>Avg MTTD</h6>
+                    <h4 id="stat-mttd">0s</h4>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card bg-success text-white text-center p-2 shadow-sm">
+                    <h6>Avg MTTR</h6>
+                    <h4 id="stat-mttr">0s</h4>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card bg-info text-dark text-center p-2 shadow-sm">
+                    <h6>Total New</h6>
+                    <h4 id="stat-new">0</h4>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card bg-warning text-dark text-center p-2 shadow-sm">
+                    <h6>In Progress</h6>
+                    <h4 id="stat-inp">0</h4>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card bg-success text-white text-center p-2 shadow-sm">
+                    <h6>Resolved</h6>
+                    <h4 id="stat-res">0</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Daftar Insiden Terdeteksi</h5>
+                <small>Auto-refresh setiap 30s</small>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mb-0 text-center align-middle">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>Waktu (UTC)</th>
+                                <th>IP Penyerang</th>
+                                <th>Tipe Serangan</th>
+                                <th>MITRE Technique</th>
+                                <th>MITRE Status</th>
+                                <th>Status Alert</th>
+                                <th>MTTD (detik)</th>
+                                <th>MTTR (detik)</th>
+                                <th>Aksi Mitigasi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <tr><td colspan="9">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAlert(msg, type) {
+            const html = `<div class="alert alert-${type} alert-dismissible fade show">${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+            document.getElementById('alert-container').innerHTML = html;
+        }
+
+        async function doAction(action, incident_id, src_ip) {
+            if(!confirm(`Jalankan aksi ${action} pada insiden #${incident_id}?`)) return;
+            try {
+                const res = await fetch(`/action/${action}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({incident_id, src_ip})
+                });
+                const data = await res.json();
+                if(res.ok && data.success) {
+                    showAlert(`Aksi ${action} berhasil: ${data.message}`, 'success');
+                } else {
+                    showAlert(`Aksi ${action} gagal: ${data.error || data.message}`, 'danger');
+                }
+                loadData();
+            } catch (err) {
+                showAlert('Terjadi kesalahan jaringan', 'danger');
+            }
+        }
+
+        function renderBadges(status) {
+            if(status === 'New') return '<span class="badge bg-primary">New</span>';
+            if(status === 'In Progress') return '<span class="badge bg-warning text-dark">In Progress</span>';
+            if(status === 'Resolved') return '<span class="badge bg-success">Resolved</span>';
+            if(status === 'False Positive') return '<span class="badge bg-secondary">False Positive</span>';
+            return `<span class="badge bg-dark">${status}</span>`;
+        }
+
+        async function loadData() {
+            try {
+                const res = await fetch('/api/incidents');
+                const data = await res.json();
+                
+                document.getElementById('stat-mttd').innerText = data.stats.avg_mttd + 's';
+                document.getElementById('stat-mttr').innerText = data.stats.avg_mttr + 's';
+                document.getElementById('stat-new').innerText = data.stats.total_new;
+                document.getElementById('stat-inp').innerText = data.stats.total_in_progress;
+                document.getElementById('stat-res').innerText = data.stats.total_resolved;
+
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = '';
+                
+                if(data.incidents.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7">Belum ada insiden terdeteksi.</td></tr>';
+                    return;
+                }
+
+                data.incidents.forEach(inc => {
+                    const tr = document.createElement('tr');
+                    
+                    let actionsHtml = '';
+                    if(inc.status === 'Resolved' || inc.status === 'False Positive') {
+                        actionsHtml = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> ${inc.action_taken || 'Selesai'}</span>`;
+                    } else {
+                        actionsHtml = `
+                            <button onclick="doAction('block-ip', ${inc.id}, '${inc.src_ip}')" class="btn btn-sm btn-danger mb-1" title="Block IP">🚫</button>
+                            <button onclick="doAction('lock-root', ${inc.id}, '${inc.src_ip}')" class="btn btn-sm btn-warning text-dark mb-1" title="Lock Root">🔒</button>
+                            <button onclick="doAction('forensics', ${inc.id}, '${inc.src_ip}')" class="btn btn-sm btn-info text-dark mb-1" title="Forensics">📸</button>
+                            <button onclick="doAction('false-positive', ${inc.id}, '${inc.src_ip}')" class="btn btn-sm btn-secondary mb-1" title="Mark False Positive">FP</button>
+                        `;
+                    }
+
+                    tr.innerHTML = `
+                        <td>${inc.timestamp}</td>
+                        <td><span class="badge bg-dark">${inc.src_ip}</span></td>
+                        <td>${inc.attack_type}<br><small class="text-muted">Src: ${inc.pipeline_source || 'Unknown'}</small></td>
+                        <td><span class="badge bg-info text-dark">${inc.mitre_technique || 'Unmapped'}</span></td>
+                        <td><span class="badge ${inc.mitre_status === 'Mapped' ? 'bg-success' : 'bg-warning text-dark'}">${inc.mitre_status || 'Unmapped'}</span></td>
+                        <td>${renderBadges(inc.status)}</td>
+                        <td>${inc.mttd_seconds !== null ? inc.mttd_seconds : '-'}</td>
+                        <td>${inc.mttr_seconds !== null ? inc.mttr_seconds : '-'}</td>
+                        <td>${actionsHtml}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error("Gagal load data", err);
+            }
+        }
+
+        loadData();
+        setInterval(loadData, 30000);
+    </script>
+</body>
+</html>
