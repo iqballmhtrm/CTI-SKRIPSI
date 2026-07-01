@@ -2,7 +2,7 @@
 
 **Judul:** Optimisasi Visualisasi Data Log dan Alert Siber Melalui Dashboard ELK Stack  
 **Peneliti:** Muhammad Iqbal Muhtaram — NIM 2241720265 — Polinema  
-**Tanggal Audit:** 2026-07-01 (diperbarui)  
+**Tanggal Audit:** 2026-07-01 (diperbarui — Sprint 9)  
 **Status:** VALIDATED
 
 ---
@@ -54,7 +54,7 @@
 | Alert Kibana PILOT | `09-Evidence/final-nmap-kibana-event.json` | ⚠️ Tracked tapi KOSONG |
 | Validasi serangan | `07-Testing/Nmap/nmap_validation_success.txt` | ✅ Tracked |
 | Output nmap PILOT | `07-Testing/Nmap/nmap_scan.txt` | ✅ Tracked (PILOT, target .10) |
-| Dashboard | `06-Dashboard/dashboard-final-v5.ndjson` (panel "Port Scan Activity") | ✅ Tracked |
+| Dashboard | `06-Dashboard/dashboard-final-v7.ndjson` (panel "Port Scan Activity") | ✅ Tracked |
 | Referensi Bab IV | `11-Bab4/implementasi_dan_pengujian.md` §Skenario 1 | ✅ Tracked |
 | Referensi Bab IV | `11-Bab4/draft-bab5-pengujian-dan-analisis.md` Tabel iter 1–10 | ✅ Tracked |
 
@@ -146,7 +146,7 @@
 | Reset mitigasi | `14-Research/protocols/cti-unblock.sh` | ✅ Tracked |
 | Alert eve.json PILOT | `09-Evidence/final-nikto-suricata-alert.json` | ✅ Tracked (PILOT) |
 | Validasi serangan | `07-Testing/Nikto/nikto_validation_success.txt` | ✅ Tracked |
-| Dashboard | `06-Dashboard/dashboard-final-v5.ndjson` (panel "Web Scan Activity") | ✅ Tracked |
+| Dashboard | `06-Dashboard/dashboard-final-v7.ndjson` (panel "Web Scan Activity") | ✅ Tracked |
 | Referensi Bab IV | `11-Bab4/implementasi_dan_pengujian.md` §Skenario 3 | ✅ Tracked |
 | Referensi Bab IV | `11-Bab4/draft-bab5-pengujian-dan-analisis.md` Tabel iter 21–30 | ✅ Tracked |
 
@@ -198,7 +198,7 @@ SOC SERVER (.10)
   │         T1=waktu dokumen masuk ES (first_alert timestamp)
   │
   ├─ Kibana
-  │    └─ dashboard-final-v5.ndjson (21 panel)
+  │    └─ dashboard-final-v7.ndjson (21 panel)
   │         Visualisasi: KPI (MTTD/MTTR/Total/GeoCount), Timeline,
   │         MITRE technique bar, Pyramid of Pain, Validation bar,
   │         Threat Score table, Benchmark bar, SOAR metrics,
@@ -233,7 +233,7 @@ SOC SERVER (.10)
 | `14-Research/protocols/cti-unblock.sh` | FINAL | Reset iptables antar-iterasi | ✅ Primer |
 | `03-Suricata/custom.rules` | FINAL | 3 SID penelitian (1000010/20/30) | ✅ Primer |
 | `05-MITRE/mitre-mapping.yml` | FINAL | Kamus SID→MITRE | ✅ Primer |
-| `06-Dashboard/dashboard-final-v5.ndjson` | FINAL | Export Kibana 21 panel (incl. Attack Origin Map) | ✅ Primer |
+| `06-Dashboard/dashboard-final-v7.ndjson` | FINAL | Export Kibana 21 panel + Indonesia provinces layer (28 obj) | ✅ Primer |
 | `12-SOAR-Dashboard/app/soar_app.py` | FINAL | Aplikasi SOAR Flask | ✅ Primer |
 
 ### 4.2 Bukti Validasi
@@ -278,16 +278,24 @@ SOC SERVER (.10)
 
 | Item | Nilai | Status |
 |------|-------|--------|
-| Dokumen dengan koordinat GeoIP valid | 36 | ✅ Ada di ES |
-| Asal negara | Amerika Serikat (20), Singapura (16) | ✅ Terverifikasi |
+| Dokumen dengan koordinat GeoIP valid | 36 serangan | ✅ Ada di ES |
+| Dokumen victim marker | 1 (SOC Polinema Malang, -7.98°S 112.63°E) | ✅ Ada di ES |
+| Asal negara serangan | Amerika Serikat (20), Singapura (16) | ✅ Terverifikasi |
 | Field GeoIP | `source.geo.location` (geo_point) | ✅ Ter-enriched |
+| Index GeoIP khusus | `cti-geoip-iqbal` (37 docs) | ✅ Deploy |
+| Layer provinsi Indonesia | `indonesia-provinces-iqbal` (29/34 provinsi, geo_shape) | ✅ Deploy |
+| Sumber data provinsi | `06-Dashboard/../indonesia-prov.geojson` (BAKOSURTANAL 1:250.000) | ✅ Tracked |
 | Panel visualisasi | `cti-attack-origin-map` (Kibana Maps, tipe `map`) | ✅ Deploy |
-| Layer peta | EMS_TMS basemap + ES_SEARCH GEOJSON_VECTOR | ✅ Konfigurasi |
+| Layer peta (4 layer) | OSM basemap / provinsi / titik serangan / victim marker | ✅ Konfigurasi |
+| Center peta | Indonesia (lon=117, lat=-2.5), zoom=4 | ✅ Konfigurasi |
 | Referensi Bab IV | `11-Bab4/implementasi_dan_pengujian.md` §4.5 panel 21 | ✅ Tracked |
 
-> **Catatan:** 36 dokumen GeoIP berasal dari trafik eksternal nyata yang masuk ke
+> **Catatan validitas data:** 36 dokumen GeoIP berasal dari trafik eksternal nyata yang masuk ke
 > VICTIM-NODE sebelum jaringan *host-only* dikunci. IP internal 192.168.56.x tidak
-> memiliki GeoIP (private range). Attack Origin Map menampilkan trafik eksternal ini.
+> memiliki GeoIP (private range). Victim marker (SOC Server) menggunakan koordinat nyata
+> Politeknik Negeri Malang sebagai infrastruktur yang dimonitor. Data provinsi bersumber
+> dari BAKOSURTANAL skala 1:250.000 (domain publik). 5/34 provinsi gagal diimpor
+> akibat polygon self-intersecting pada data sumber (tidak mempengaruhi visualisasi).
 
 ---
 

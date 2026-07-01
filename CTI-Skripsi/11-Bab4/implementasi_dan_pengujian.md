@@ -156,12 +156,22 @@ dan terdiri dari 21 panel yang diorganisasikan dalam lima lapisan analisis berur
 | 21 | `cti-attack-origin-map` | **Kibana Maps** | Layer 5: Geo | *Attack Origin Map*: sebaran geografis sumber serangan |
 
 Panel ke-21 (`cti-attack-origin-map`) menggunakan tipe objek `map` dari Kibana Maps,
-bukan tipe `visualization` biasa. Peta ini menampilkan titik serangan dari IP publik
-eksternal yang diperoleh dari proses *GeoIP enrichment* Logstash pada field `source.geo.location`.
-Dalam data penelitian, terdapat 36 dokumen dengan koordinat GeoIP valid: 20 dari Amerika Serikat
-dan 16 dari Singapura — trafik eksternal yang masuk ke VICTIM-NODE sebelum jaringan
-*host-only* dikunci. Peta menggunakan basemap EMS (Elastic Maps Service) dengan layer
-dokumen ES jenis `GEOJSON_VECTOR` pada field `source.geo.location`.
+bukan tipe `visualization` biasa. Peta menampilkan konteks geografis serangan terhadap
+infrastruktur Indonesia dengan empat layer:
+
+1. **Basemap OSM** — peta dasar OpenStreetMap (dikonfigurasi via `kibana.yml`), menggantikan
+   EMS yang memerlukan akses internet ke server Elastic.
+2. **Provinsi Indonesia** — batas 29 provinsi dari data BAKOSURTANAL skala 1:250.000
+   (index `indonesia-provinces-iqbal`, tipe `geo_shape`), memberikan konteks wilayah Indonesia.
+3. **Titik Serangan** — 36 dokumen dari `cti-geoip-iqbal` dengan koordinat GeoIP valid:
+   20 dari Amerika Serikat dan 16 dari Singapura, ditampilkan sebagai titik merah.
+   Ini adalah trafik eksternal nyata yang masuk ke VICTIM-NODE sebelum jaringan *host-only* dikunci.
+4. **Marker Target/SOC** — 1 titik teal di Malang (-7.98°S, 112.63°E) menandai lokasi
+   SOC Server Politeknik Negeri Malang sebagai infrastruktur yang dimonitor.
+
+Peta dipusatkan pada wilayah Indonesia (lon=117, lat=-2.5, zoom=4), mengilustrasikan
+narasi pertahanan siber: serangan dari IP publik luar negeri → terdeteksi di sistem
+SOC yang berlokasi di Malang, Jawa Timur.
 
 Lima *saved search* Discover tersedia sebagai pendukung investigasi ad-hoc:
 `discover-all-alerts`, `discover-nmap-only`, `discover-hydra-only`, `discover-nikto-only`,
