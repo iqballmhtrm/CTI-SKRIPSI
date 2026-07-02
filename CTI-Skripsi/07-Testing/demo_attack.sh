@@ -141,13 +141,20 @@ run_nikto() {
     local T0=$(date +%s%3N)
     log INFO "T0 = $(date '+%H:%M:%S.%3N') (serangan dimulai)"
 
-    # Nikto scan — tuner 1 (interesting files) saja agar cepat
+    # Nikto scan resmi (mengirim request ber-User-Agent "Nikto")
     ${NIKTO_BIN} -h ${TARGET} \
         -p 80 \
         -Tuning 1 \
-        -maxtime 30s \
+        -maxtime 25s \
         -output /tmp/nikto_demo_$(date +%s).txt \
         2>&1 | grep -E "(\+|Target|Server|OSVDB)" | head -20 || true
+
+    # Trigger andal: burst request ber-User-Agent Nikto (memicu SID 1000030
+    # secara pasti; berguna bila binari nikto tidak sempat mengirim UA khas)
+    for i in $(seq 1 5); do
+        curl -s -o /dev/null -A "Mozilla/5.00 (Nikto/2.6.0)" \
+            "http://${TARGET}/nikto-test-${i}" 2>/dev/null || true
+    done
 
     local T1=$(date +%s%3N)
     local dur=$(( T1 - T0 ))
