@@ -1,0 +1,47 @@
+# ============================================================
+# VirtualBox VM files — JANGAN commit (ukuran puluhan GB)
+# ============================================================
+SOC-SERVER/
+ATTACKER-NODE/
+VICTIM-NODE/
+_ATTACKER-NODE-OLD-BACKUP/
+*.vdi
+*.vbox
+*.vbox-prev
+*.sav
+*.vmdk
+*.ova
+
+# VirtualBox logs & snapshots
+**/Logs/
+**/Snapshots/
+VBox*.log*
+
+# ============================================================
+# IDE / editor
+# ============================================================
+.kiro/
+.vscode/
+.idea/
+*.swp
+*~
+
+# ============================================================
+# Temp / scratch / OS
+# ============================================================
+*.tmp
+*.bak
+*.bak[0-9]
+scratchpad/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ============================================================
+# Secrets (jangan pernah commit)
+# ============================================================
+*.env
+.env
+!*.env.example
+*_secret*
+*password*

@@ -23,19 +23,37 @@ Muhammad Iqbal Muhtaram — NIM 2241720265 — Teknik Informatika, Polinema
 | Direktori | Isi |
 |-----------|-----|
 | `01-Topologi/` | Diagram topologi penelitian |
-| `02-ELK/` | Konfigurasi Logstash pipeline (`soc-pipeline.conf`, `99-mitre-normalize.conf`) dan skrip operasional ELK |
+| `02-ELK/` | Konfigurasi ELK: `soc-pipeline.conf` (Logstash), `elasticsearch.yml`, `kibana.yml`, `filebeat.yml`, `99-mitre-normalize.conf` |
 | `03-Suricata/` | Custom rules Suricata penelitian (SID 1000010/1000020/1000030) |
-| `04-Wazuh/` | Konfigurasi Wazuh Manager (`ossec.conf`) dengan active response |
-| `05-MITRE/` | Kamus pemetaan MITRE ATT&CK (`mitre-mapping.yml`) |
-| `06-Dashboard/` | Export CTI Dashboard Kibana (NDJSON), v1–v5 |
-| `07-Testing/` | Skrip dan data pengujian |
-| `08-Screenshots/` | Tangkapan layar SOC dashboard |
-| `09-Evidence/` | Bukti alert JSON (Suricata + Elasticsearch) untuk ketiga skenario |
+| `04-Wazuh/` | Konfigurasi Wazuh Manager (`ossec.conf`) + integrasi Telegram (`custom-telegram.py`, token disensor) |
+| `05-MITRE/` | Kamus pemetaan MITRE ATT&CK (`mitre-mapping.yml`) + rules ber-metadata |
+| `06-Dashboard/` | Export CTI Dashboard Kibana final (`dashboard-final-v9.ndjson`, 27 objek) + dokumen desain |
+| `07-Testing/` | `demo_attack.sh` (demo real-time 3 skenario), skrip iterasi MTTD, hasil validasi Nmap/Hydra/Nikto |
+| `08-Screenshots/` | Tangkapan layar SOC, dashboard, ELK, Wazuh |
+| `09-Evidence/` | Bukti alert JSON (Suricata + Elasticsearch) untuk ketiga skenario + laporan validasi |
 | `10-Bab3/` | Metodologi penelitian (Bab III) |
 | `11-Bab4/` | Implementasi dan pengujian (Bab IV) |
 | `12-SOAR-Dashboard/` | Aplikasi SOAR Flask/SQLite (port 5000) |
-| `14-Research/` | Dataset 30-iterasi (`datasets/iterations.csv`), protokol eksperimen, dan arsip |
-| `15-Project-Governance/` | Governance penelitian |
+| `13-Audit/` | Laporan audit ground-truth, klasifikasi sumber bukti, komposisi dataset |
+| `14-Research/` | `WORKFLOW_ILMIAH.md` (alur kerja & kontribusi), `TRACEABILITY_MATRIX.md`, dataset 30-iterasi, protokol eksperimen |
+| `15-Project-Governance/` | Governance penelitian (R-00…R-14, konstitusi, keputusan) |
+
+> **Catatan:** File VM VirtualBox (`SOC-SERVER/`, `*.vdi`, snapshot, log) sengaja
+> di-*exclude* dari repositori via `.gitignore` karena berukuran puluhan GB.
+
+---
+
+## Komponen Sistem
+
+| Komponen | Peran |
+|----------|-------|
+| Suricata IDS | Deteksi jaringan (SID 1000010/20/30), app-layer HTTP |
+| Wazuh Manager | HIDS + Active Response (firewall-drop) + integrasi Telegram & AbuseIPDB |
+| Filebeat → Logstash | Pengiriman & enrichment (MITRE ATT&CK, Pyramid of Pain, GeoIP) |
+| Elasticsearch | Penyimpanan & agregasi; ILM auto-delete `cti-logs-iqbal-*` (retensi 3 hari) |
+| Kibana | Dashboard 5 layer, Alerting (7 rule), Cases |
+| SOAR Flask | Webhook receiver alert (port 5000) |
+| Telegram Bot | Peringatan insiden real-time (hanya serangan berdampak, bahasa awam) |
 
 ---
 
